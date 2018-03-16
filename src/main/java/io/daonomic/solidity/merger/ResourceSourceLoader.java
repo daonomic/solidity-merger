@@ -21,7 +21,11 @@ public class ResourceSourceLoader implements SourceLoader {
     @Override
     public String load(String path) throws IOException {
         try (InputStream in = getClass().getClassLoader().getResourceAsStream(root + "/" + path)) {
-            return IOUtils.toString(in, StandardCharsets.UTF_8);
+            if (in == null) {
+                return null;
+            } else {
+                return IOUtils.toString(in, StandardCharsets.UTF_8);
+            }
         }
     }
 }

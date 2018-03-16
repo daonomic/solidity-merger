@@ -2,10 +2,7 @@ package io.daonomic.solidity.merger;
 
 import org.apache.commons.io.IOUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class FileSourceLoader implements SourceLoader {
@@ -24,6 +21,8 @@ public class FileSourceLoader implements SourceLoader {
     public String load(String path) {
         try (InputStream in = new FileInputStream(root + "/" + path)) {
             return IOUtils.toString(in, StandardCharsets.UTF_8);
+        } catch (FileNotFoundException e) {
+            return null;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
