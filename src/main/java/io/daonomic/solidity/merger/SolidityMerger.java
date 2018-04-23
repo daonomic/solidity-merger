@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 public class SolidityMerger {
     public static final Pattern IMPORT_PATTERN = Pattern.compile("import ['\"](.+?)['\"];(\\s)*");
     public static final Pattern PRAGMA_PATTERN = Pattern.compile("pragma solidity (.+?);(\\s)*");
+    public static final Pattern PRAGMA_EXP_PATTERN = Pattern.compile("pragma experimental (.+?);(\\s)*");
 
     private final SourceLoader loader;
 
@@ -49,7 +50,7 @@ public class SolidityMerger {
     }
 
     private String stripPragma(String source) throws IOException {
-        return replace(source, PRAGMA_PATTERN, m -> "");
+        return replace(replace(source, PRAGMA_PATTERN, m -> ""), PRAGMA_EXP_PATTERN, m -> "");
     }
 
     private String replace(String source, Pattern pattern, IOExceptionFunction<Matcher, String> f) throws IOException {
